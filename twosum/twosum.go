@@ -4,7 +4,7 @@ func TwoSum(nums []int, target int) []int {
 	mp := make(map[int]int)
 	for i, v := range nums {
 		if kmap, ok := mp[target-v]; ok {
-			return []int{i, kmap}
+			return []int{kmap, i}
 		}
 		mp[v] = i
 	}
