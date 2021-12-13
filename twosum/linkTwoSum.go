@@ -1,12 +1,11 @@
 package twosum
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import (
+	"data_structur/linkedlist"
+)
 
-func LinkTwoSum(l1 *ListNode, l2 *ListNode) *ListNode {
-	var resultNode, tmp *ListNode
+func LinkTwoSum(l1 *linkedlist.Node, l2 *linkedlist.Node) *linkedlist.Node {
+	var resultNode, tmp *linkedlist.Node
 	var devider, val int
 	val = l1.Val + l2.Val
 	resultNode, devider = newNode(val, devider)
@@ -14,12 +13,12 @@ func LinkTwoSum(l1 *ListNode, l2 *ListNode) *ListNode {
 
 	for ; l1.Next != nil || l2.Next != nil; l1, l2 = l1.Next, l2.Next {
 		if l1.Next == nil {
-			l1.Next = &ListNode{
+			l1.Next = &linkedlist.Node{
 				Val: 0,
 			}
 		}
 		if l2.Next == nil {
-			l2.Next = &ListNode{
+			l2.Next = &linkedlist.Node{
 				Val: 0,
 			}
 		}
@@ -29,21 +28,21 @@ func LinkTwoSum(l1 *ListNode, l2 *ListNode) *ListNode {
 		current = current.Next
 	}
 	if devider > 0 {
-		current.Next = &ListNode{
+		current.Next = &linkedlist.Node{
 			Val: devider,
 		}
 	}
 	return resultNode
 }
 
-func newNode(val int, devider int) (node *ListNode, divOut int) {
+func newNode(val int, devider int) (node *linkedlist.Node, divOut int) {
 	val += devider
 	if val >= 10 {
-		node = &ListNode{
+		node = &linkedlist.Node{
 			Val: (val % 10),
 		}
 	} else {
-		node = &ListNode{
+		node = &linkedlist.Node{
 			Val: val,
 		}
 	}
