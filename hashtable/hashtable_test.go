@@ -1,8 +1,11 @@
 package hashtable
 
-import "testing"
+import (
+	"log"
+	"testing"
+)
 
-func HashValue(t *testing.T) {
+func TestHashValue(t *testing.T) {
 	testTable := []struct {
 		value string
 	}{
@@ -15,7 +18,8 @@ func HashValue(t *testing.T) {
 		{value: "am"}, {value: "an"}, {value: "ao"}, {value: "ap"}, {value: "aq"}, {value: "ar"},
 		{value: "as"}, {value: "at"}, {value: "au"}, {value: "av"}, {value: "aw"}, {value: "ax"},
 		{value: "ay"}, {value: "az"}, {value: "ae"}, {value: "af"}, {value: "kbfweakbjjewbf00"},
-		{value: "bkjwaehlofewa"}, {value: "vvv"}, {value: "zvz"},
+		{value: "bkjwaehlofewa"}, {value: "vvv"}, {value: "zvz"}, {value: "kbfweakbjjewbf10"},
+		{value: "kaafweakbjjewbf00"},
 	}
 	del := "bkjwaehlofewa"
 	ht := NewHashTable()
@@ -24,12 +28,14 @@ func HashValue(t *testing.T) {
 	}
 	for _, a := range testTable {
 		val := ht.Get(a.value)
+		log.Printf("mendapatkan %v, expect %v", val, a.value)
 		if val != a.value {
 			t.FailNow()
 		}
 	}
 	ht.Remove(del)
 	if ht.Get(del) != "" {
+		log.Println("Gagal ketika penghapusan")
 		t.FailNow()
 	}
 }

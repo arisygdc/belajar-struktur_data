@@ -14,14 +14,14 @@ func NewHashTable() (hTable HTable) {
 }
 
 func hash(val string) int {
-	h := 0
+	var h byte
 	leng := len(val)
-	for i := 0; i <= leng; i++ {
-		h += 2*h + i
+	for i := 0; i < leng; i++ {
+		h += val[i] + byte(i)
 	}
-	separator := int(val[0]) - int(val[leng/2]) + int(val[leng-1])
+	separator := (val[0] + val[leng/2] + val[leng-1])
 	h += separator
-	return h
+	return int(h)
 }
 
 func (ht *HTable) Put(val string) {
