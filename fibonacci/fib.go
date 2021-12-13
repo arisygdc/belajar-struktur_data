@@ -17,7 +17,7 @@ func (fib Fib) fibRec(n int) (result float64) {
 	return
 }
 
-func Run(n int) float64 {
+func Count(n int) float64 {
 	fib := Fib{
 		cache: make(map[int]float64),
 	}
