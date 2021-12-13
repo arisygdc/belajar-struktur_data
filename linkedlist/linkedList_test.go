@@ -19,7 +19,7 @@ func TestInsertLink(t *testing.T) {
 		if current.GetVal() != v {
 			t.FailNow()
 		}
-		current = current.next
+		current = current.Next
 	}
 
 	for _, v := range first {
@@ -32,7 +32,7 @@ func TestInsertLink(t *testing.T) {
 		if current.GetVal() != first[i] {
 			t.FailNow()
 		}
-		current = current.next
+		current = current.Next
 	}
 }
 

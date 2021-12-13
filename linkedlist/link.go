@@ -5,12 +5,12 @@ import (
 )
 
 type Node struct {
-	data int
-	next *Node
+	Val  int
+	Next *Node
 }
 
 func (n Node) GetVal() int {
-	return n.data
+	return n.Val
 }
 
 type LinkedList struct {
@@ -20,8 +20,8 @@ type LinkedList struct {
 
 func (l *LinkedList) Prepend(data int) {
 	n := &Node{
-		data: data,
-		next: l.head,
+		Val:  data,
+		Next: l.head,
 	}
 	l.head = n
 	l.length++
@@ -29,22 +29,22 @@ func (l *LinkedList) Prepend(data int) {
 
 func (l *LinkedList) Append(data int) {
 	n := &Node{
-		data: data,
+		Val: data,
 	}
 	if l.head == nil {
 		l.head = n
 	} else {
 		current := l.head
-		for ; current.next != nil; current = current.next {
+		for ; current.Next != nil; current = current.Next {
 		}
 
-		current.next = n
+		current.Next = n
 	}
 }
 
 func (l LinkedList) Search(data int) bool {
-	for current := l.head; current != nil; current = current.next {
-		if current.data == data {
+	for current := l.head; current != nil; current = current.Next {
+		if current.Val == data {
 			return true
 		}
 	}
@@ -52,17 +52,17 @@ func (l LinkedList) Search(data int) bool {
 }
 
 func (l *LinkedList) Delete(data int) error {
-	if l.head.data == data {
-		l.head = l.head.next
+	if l.head.Val == data {
+		l.head = l.head.Next
 		l.length--
 		return nil
 	} else if l.head == nil {
 
 	} else {
 		current := l.head
-		for ; current.next != nil; current = current.next {
-			if current.next.data == data {
-				current.next = current.next.next
+		for ; current.Next != nil; current = current.Next {
+			if current.Next.Val == data {
+				current.Next = current.Next.Next
 				l.length--
 				return nil
 			}
@@ -72,8 +72,8 @@ func (l *LinkedList) Delete(data int) error {
 }
 
 func (l LinkedList) Print() {
-	for current := l.head; current != nil; current = current.next {
-		fmt.Printf("%v ", current.data)
+	for current := l.head; current != nil; current = current.Next {
+		fmt.Printf("%v ", current.Val)
 	}
 	fmt.Println()
 }
@@ -88,9 +88,9 @@ func (l LinkedList) GetNode() *Node {
 
 func (l LinkedList) GetTail() int {
 	current := l.head
-	for ; current.next != nil; current = current.next {
+	for ; current.Next != nil; current = current.Next {
 	}
-	return current.data
+	return current.Val
 }
 
 func New() *LinkedList {
