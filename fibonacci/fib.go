@@ -1,4 +1,4 @@
-package fibonaci
+package fibonacci
 
 type Fib struct {
 	cache map[int]float64
