@@ -1,25 +1,19 @@
 package palindrome
 
-import (
-	"strconv"
-	"strings"
-)
+import "strconv"
 
-func IsIntPalindrome(nums int) bool {
-	str := strconv.FormatInt(int64(nums), 10)
-	leng := len(str)
-	if leng == 1 {
-		return true
+func IsIntPalindrome(x int) bool {
+	if x < 0 {
+		return false
 	}
+	str := strconv.FormatInt(int64(x), 10)
 
-	str = strings.ToLower(str)
-	devider := leng / 2
-
-	var head, tail string
-	head = str[:devider]
-
-	for i := devider; i > 0; i-- {
-		tail = string(str[leng-i]) + tail
+	j := len(str) - 1
+	for i := 0; i < len(str)/2; i++ {
+		if str[i] != str[j] {
+			return false
+		}
+		j--
 	}
-	return head == tail
+	return true
 }

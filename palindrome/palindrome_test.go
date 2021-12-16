@@ -37,6 +37,7 @@ func TestIntPalindrome(t *testing.T) {
 		{num: 6776, expect: true},
 		{num: 10, expect: false},
 		{num: -101, expect: false},
+		{num: 0, expect: true},
 	}
 	for _, v := range testTabble {
 		result := IsIntPalindrome(v.num)
