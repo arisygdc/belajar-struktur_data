@@ -24,3 +24,25 @@ func TestPalindrome(t *testing.T) {
 		log.Printf("%v result %v expected %v", v.str, result, v.expect)
 	}
 }
+
+func TestIntPalindrome(t *testing.T) {
+	testTabble := []struct {
+		num    int
+		expect bool
+	}{
+		{num: 121, expect: true},
+		{num: -121, expect: false},
+		{num: 556323, expect: false},
+		{num: 373, expect: true},
+		{num: 6776, expect: true},
+		{num: 10, expect: false},
+		{num: -101, expect: false},
+	}
+	for _, v := range testTabble {
+		result := IsIntPalindrome(v.num)
+		if result != v.expect {
+			t.Fail()
+		}
+		log.Printf("%v result %v expected %v", v.num, result, v.expect)
+	}
+}
