@@ -18,6 +18,10 @@ func (fib Fib) fibRec(n int) (result float64) {
 }
 
 func Count(n int) float64 {
+	if n < 2 {
+		return float64(n)
+	}
+
 	fib := Fib{
 		cache: make(map[int]float64),
 	}
