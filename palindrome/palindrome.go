@@ -12,12 +12,10 @@ func IsPalindrome(str string) bool {
 
 	str = strings.ToLower(str)
 
-	j := leng - 1
-	for i := 0; i < leng/2; i++ {
+	for i, j := 0, leng-1; i < leng/2; i, j = i+1, j-1 {
 		if str[i] != str[j] {
 			return false
 		}
-		j--
 	}
 	return true
 }
