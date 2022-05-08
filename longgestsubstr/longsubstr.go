@@ -1,24 +1,45 @@
 package longgestsubstr
 
-func LengthOfLongestSubstring(s string) int {
-	var (
-		mp       map[rune]rune = make(map[rune]rune)
-		longgest int
-	)
+type LonggestSubStr struct {
+	mp       map[byte]bool
+	str      string
+	longgest int
+}
 
-	for _, v := range s {
-		if _, ok := mp[v]; !ok {
-			mp[v] = v
-			if len(mp) > longgest {
-				longgest = len(mp)
-			}
-		} else {
-			mp = make(map[rune]rune)
-			mp[v] = v
-			if len(mp) > longgest {
-				longgest = len(mp)
-			}
-		}
+func NewLonggestSubStr(str string) LonggestSubStr {
+	return LonggestSubStr{
+		mp:  make(map[byte]bool),
+		str: str,
 	}
-	return longgest
+}
+
+func (lss *LonggestSubStr) Count() {
+	if len(lss.str) <= 1 {
+		lss.longgest = len(lss.str)
+		return
+	}
+
+	for i := 0; i < len(lss.str)-1; i++ {
+		for j := i; j < len(lss.str) && !lss.mp[lss.str[j]]; j++ {
+			lss.mp[lss.str[j]] = true
+		}
+		lss.reset()
+	}
+}
+
+func (lss *LonggestSubStr) reset() {
+	if len(lss.mp) > lss.longgest {
+		lss.longgest = len(lss.mp)
+	}
+	lss.mp = make(map[byte]bool)
+}
+
+func (lss LonggestSubStr) GetLoggest() int {
+	return lss.longgest
+}
+
+func LengthOfLongestSubstring(s string) int {
+	lsstr := NewLonggestSubStr(s)
+	lsstr.Count()
+	return lsstr.longgest
 }
