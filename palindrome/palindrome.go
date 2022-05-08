@@ -11,13 +11,13 @@ func IsPalindrome(str string) bool {
 	}
 
 	str = strings.ToLower(str)
-	devider := leng / 2
 
-	var head, tail string
-	head = str[:devider]
-
-	for i := devider; i > 0; i-- {
-		tail = string(str[leng-i]) + tail
+	j := leng - 1
+	for i := 0; i < leng/2; i++ {
+		if str[i] != str[j] {
+			return false
+		}
+		j--
 	}
-	return head == tail
+	return true
 }

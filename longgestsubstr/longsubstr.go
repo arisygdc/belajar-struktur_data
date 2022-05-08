@@ -19,7 +19,6 @@ func LengthOfLongestSubstring(s string) int {
 				longgest = len(mp)
 			}
 		}
-
 	}
 	return longgest
 }
