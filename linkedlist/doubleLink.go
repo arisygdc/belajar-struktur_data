@@ -1,6 +1,8 @@
 package linkedlist
 
-import "fmt"
+import (
+	"errors"
+)
 
 type DNode struct {
 	prev *DNode
@@ -8,118 +10,121 @@ type DNode struct {
 	data interface{}
 }
 
-func (n DNode) Next() *DNode {
-	return n.next
+type DLinkedList struct {
+	head *DNode
+	tail *DNode
 }
 
-func (n DNode) Prev() *DNode {
-	return n.prev
+func NewD() *DLinkedList {
+	return &DLinkedList{}
 }
 
 func (n DNode) Val() interface{} {
 	return n.data
 }
 
-type DLinkedList struct {
-	head   *DNode
-	tail   *DNode
-	length int
-}
-
-func (l *DLinkedList) Append(data interface{}) {
-	n := &DNode{
+func (l *DLinkedList) AddToHead(data interface{}) {
+	before := &DNode{
 		data: data,
+		next: nil,
+		prev: nil,
 	}
 
 	if l.head == nil {
-		l.head = n
-		l.tail = n
+		l.head = before
+		l.tail = before
 	} else {
-		current := l.head
-		for current.next != nil {
-			current = current.next
+		before.next = l.head
+		l.head.prev = before
+		l.head = before
+	}
+}
+
+func (l *DLinkedList) AddNode(data interface{}) {
+	after := &DNode{
+		data: data,
+		next: nil,
+		prev: nil,
+	}
+
+	l.tail = after
+	if l.head == nil {
+		l.head = after
+	} else {
+		curr := l.head
+		for ; curr.next != nil; curr = curr.next {
 		}
-		current.next = n
-
-		// Swap Tail
-		n.prev = l.tail
-		l.tail = n
+		curr.next = after
+		after.prev = curr
 	}
-	l.length++
 }
 
-func (l DLinkedList) Print() {
-	current := l.head
-	for ; current != nil; current = current.next {
-		fmt.Printf("%v ", current.data)
-	}
-
-	fmt.Println()
+func (l DLinkedList) IsEmpty() bool {
+	return l.head == nil
 }
 
-func (l DLinkedList) PrintReverse() {
-	current := l.tail
-	for ; current != nil; current = current.prev {
-		fmt.Printf("%v ", current.data)
+func (l *DLinkedList) DeleteAtHead() error {
+	if l.IsEmpty() {
+		return errors.New("cannot delete empty list")
 	}
 
-	fmt.Println()
+	l.head = l.head.next
+	l.head.prev = nil
+	return nil
+}
+
+func (l *DLinkedList) DeleteAtEnd() error {
+	if l.IsEmpty() {
+		return errors.New("cannot delete empty list")
+	}
+
+	l.tail = l.tail.prev
+	l.tail.next = nil
+	return nil
 }
 
 func (l *DLinkedList) Delete(target interface{}) error {
-	current := l.head
-	currentT := l.tail
-	if l.length < 1 {
-		return fmt.Errorf("tidak ditemukan")
+	head := l.head
+	if l.IsEmpty() {
+		return errors.New("cannot delete empty list")
 	}
-	if current.data == target {
-		l.head = l.head.next
-		for currentT.prev.prev != nil {
-			currentT = currentT.prev
-		}
-		currentT.prev = currentT.prev.prev
-		l.length--
+	curr := head
+	if curr.Val() == target {
+		l.DeleteAtHead()
 		return nil
 	}
-	if currentT.data == target {
-		l.tail = l.tail.prev
-		for current.next.next != nil {
-			current = current.next
-		}
-		current.next = current.next.next
-		l.length--
+
+	if l.tail.Val() == target {
+		l.DeleteAtEnd()
 		return nil
 	}
-	change := 0
-	for current.next != nil {
-		if current.next.data == target {
-			current.next = current.next.next
-			change++
-			if change > 1 {
-				return nil
-			}
+
+	for curr = curr.next; curr.next != nil; curr = curr.next {
+		if target == curr.Val() {
+			curr.next.prev = curr.prev
+			curr.prev.next = curr.next
+			return nil
 		}
-		if currentT.prev.data == target {
-			currentT.prev = currentT.prev.prev
-			change++
-			if change > 1 {
-				return nil
-			}
-		}
-		current = current.next
-		currentT = currentT.prev
 	}
-	return fmt.Errorf("tidak ditemukan")
+
+	return errors.New("target not found")
 }
 
-func (l DLinkedList) Head() *DNode {
-	return l.head
+func (l DLinkedList) Array() []interface{} {
+	var arr []interface{}
+	for curr := l.head; curr != nil; curr = curr.next {
+		arr = append(arr, curr.data)
+	}
+
+	return arr
 }
 
-func (l DLinkedList) Tail() *DNode {
-	return l.tail
-}
+func (l DLinkedList) ReverseArray() []interface{} {
+	var arr []interface{}
+	curr := l.tail
+	for ; curr != nil; curr = curr.prev {
+		arr = append(arr, curr.data)
+	}
 
-func NewD() *DLinkedList {
-	return &DLinkedList{}
+	return arr
 }

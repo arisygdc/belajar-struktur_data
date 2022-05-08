@@ -69,135 +69,30 @@ func TestDeleteLink(t *testing.T) {
 
 }
 
-func TestInsertDlink(t *testing.T) {
+func TestInsertAndDeleteDlink(t *testing.T) {
 	dLink := NewD()
+	if dLink.IsEmpty() != true {
+		t.FailNow()
+	}
 	for _, v := range first {
-		dLink.Append(v)
+		dLink.AddNode(v)
+	}
+	dLink.Delete(first[0])
+	dLink.Delete(first[3])
+	dLink.Delete(first[7])
+
+	arr := dLink.Array()
+	RArr := dLink.ReverseArray()
+	if len(arr) != len(RArr) {
+		t.Fail()
+		t.Errorf("length array (%d) and reverse (%d) not match ", len(arr), len(RArr))
 	}
 
-	node := dLink.Head()
-	i := 0
-	for {
-		t.Logf("Link: %v, Arr: %v\n", node.Val(), first[i])
-		if node.Val() != first[i] {
-			t.FailNow()
-		}
-		if node.Next() == nil {
-			break
-		}
-		i++
-		node = node.Next()
-	}
+	last := len(arr) - 1
 
-	i = len(first) - 1
-	for {
-		t.Logf("Link: %v, Arr: %v\n", node.Val(), first[i])
-		if node.Val() != first[i] {
-			t.FailNow()
+	for _, v := range RArr {
+		if arr[last] != v {
+			t.Logf("got result, %d and reverse %d. expected match", arr[last], v)
 		}
-		if node.Prev() == nil {
-			break
-		}
-		i--
-		node = node.Prev()
-	}
-
-	node = dLink.Tail()
-	i = len(first) - 1
-	for {
-		t.Logf("Link: %v, Arr: %v\n", node.Val(), first[i])
-		if node.Val() != first[i] {
-			t.FailNow()
-		}
-		if node.Prev() == nil {
-			break
-		}
-		i--
-		node = node.Prev()
-	}
-
-	i = 0
-	for {
-		t.Logf("Link: %v, Arr: %v\n", node.Val(), first[i])
-		if node.Val() != first[i] {
-			t.FailNow()
-		}
-		if node.Next() == nil {
-			break
-		}
-		i++
-		node = node.Next()
-	}
-}
-
-func TestDeleteDlinkError(t *testing.T) {
-	dLink := NewD()
-	for _, v := range first {
-		dLink.Append(v)
-	}
-	testTable := []struct {
-		num    int
-		expect error
-	}{
-		{num: 14, expect: fmt.Errorf("tidak ditemukan")},
-		{num: 10, expect: nil},
-		{num: 30, expect: nil},
-		{num: 60, expect: nil},
-		{num: 44, expect: fmt.Errorf("tidak ditemukan")},
-	}
-
-	link := NewD()
-
-	for _, n := range testTable {
-		t.Logf("Delete number %v", n.num)
-		cur := link.Delete(n.num)
-		if n.expect != nil {
-			if cur != nil {
-				t.Log("fail")
-				continue
-			} else {
-				t.Log("Not expect")
-				t.FailNow()
-			}
-		}
-		if cur != n.expect {
-			t.Logf("%v", cur)
-		}
-	}
-}
-
-func TestDeleteDlinkValue(t *testing.T) {
-	second := []int{20, 40, 50, 70}
-	dLink := NewD()
-	for _, v := range first {
-		dLink.Append(v)
-	}
-	dLink.Delete(10)
-	dLink.Delete(30)
-	dLink.Delete(60)
-	dLink.Delete(80)
-
-	node := dLink.Head()
-
-	for _, n := range second {
-		t.Logf("current: %v, expect: %v", node.Val(), n)
-		if node.Val() != n {
-			t.FailNow()
-		}
-		node = node.Next()
-	}
-
-	node = dLink.Tail()
-	num := len(second) - 1
-	for {
-		t.Logf("current: %v, expect: %v", node.Val(), second[num])
-		if node.Val() != second[num] {
-			t.FailNow()
-		}
-		if node.Prev() == nil {
-			break
-		}
-		node = node.Prev()
-		num--
 	}
 }
