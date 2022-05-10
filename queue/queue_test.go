@@ -9,13 +9,22 @@ func TestLinearQueue(t *testing.T) {
 	size := 5
 	lq := NewLinear(size)
 	for i := 1; i < 6; i++ {
+		if lq.IsFull() {
+			t.Fail()
+			log.Println("expected not full")
+		}
+
 		lq.Enqueue(i)
+
+		if lq.IsEmpty() {
+			t.Fail()
+			log.Println("expected not empty")
+		}
 	}
 
-	err := lq.Enqueue(10)
-	if err == nil {
-		log.Println("expected error")
+	if lq.Enqueue(10) == nil {
 		t.Fail()
+		log.Println("expected full")
 	}
 
 	for i := 1; i < 6; i++ {
@@ -33,7 +42,7 @@ func TestLinearQueue(t *testing.T) {
 		lq.Dequeue()
 	}
 
-	err = lq.Dequeue()
+	err := lq.Dequeue()
 	if err == nil {
 		log.Println("expected error")
 		t.Fail()
@@ -50,5 +59,44 @@ func TestLinearQueue(t *testing.T) {
 	if addToQueue != peek {
 		log.Printf("expected %d, got %d\n", addToQueue, peek)
 		t.Fail()
+	}
+}
+
+func TestCircularQueue(t *testing.T) {
+	var lengTest = 6
+	cQueue := NewCircular(lengTest)
+	for i := 1; i <= lengTest; i++ {
+		cQueue.Enqueue(i)
+	}
+	full := cQueue.IsFull()
+	if !full {
+		t.Fail()
+		log.Println("expected queue is full")
+	}
+
+	for i := 1; i <= lengTest; i++ {
+		peek, err := cQueue.Peek()
+		if err != nil {
+			t.Fail()
+			log.Println(err)
+		}
+
+		if peek != i {
+			t.Fail()
+			log.Printf("expected %d, got %d\n", i, peek)
+		}
+
+		cQueue.Dequeue()
+	}
+
+	if !cQueue.IsEmpty() {
+		t.Fail()
+		log.Println("expected empty")
+	}
+
+	err := cQueue.Dequeue()
+	if err == nil {
+		t.Fail()
+		log.Println("expected error: ", ErrQueueEmpty)
 	}
 }
